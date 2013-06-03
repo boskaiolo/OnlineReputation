@@ -8,8 +8,9 @@ from senti_classifier import senti_classifier
 # DEFINE
 PAGES_TO_SCAN = 50
 
-keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'retina', 'cupertino', 'wwdc', 'macbook',
-            'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode', 'NSfoundation'}
+keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
+            'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
+            'facetime', 'appstore', 'osx', 'nsobject'}
 tweets = []
 
 
@@ -35,7 +36,7 @@ def normalize_tweet(text):
                 word = ""
             else:
                 word = pattern.sub(r"\1\1\1", word)
-                word = nltk.PorterStemmer().stem(word)
+                #word = nltk.PorterStemmer().stem(word)
 
             clean_text = clean_text + " " + word
 
@@ -63,7 +64,9 @@ if __name__ == '__main__':
                     coordinates = text["geo"]["coordinates"]
                     if coordinates[0] != 0.0 and coordinates[1] != 0.0:
 
-                        pos_score, neg_score = senti_classifier.polarity_scores([text["text"]])
+                        clean_text = normalize_tweet(text["text"])
+
+                        pos_score, neg_score = senti_classifier.polarity_scores([clean_text])
                         if pos_score > neg_score:
                             vote = 1
                         elif pos_score < neg_score:
@@ -71,7 +74,7 @@ if __name__ == '__main__':
                         else:
                             vote = 0
 
-                        print vote, text["geo"]["coordinates"], normalize_tweet(text["text"])
+                        print coordinates[0], coordinates[1], vote
 
 
 
