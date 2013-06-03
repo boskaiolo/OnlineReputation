@@ -1,19 +1,29 @@
+__author__ = "Alberto Boschetti"
+__status__ = "Prototype"
+
 import re
 import urllib
 import json
 import nltk
 from nltk.corpus import stopwords
+import time
 from senti_classifier import senti_classifier
+from makehtml import array_to_html_page
+
 
 # DEFINE
-import time
-
 PAGES_TO_SCAN = 10
+SLEEP_INTERVAL_FOR_GOOGLE_QUERY = 3
+
 
 keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
             'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
             'facetime', 'appstore', 'osx', 'nsobject'}
 tweets = []
+
+
+
+
 
 
 def normalize_tweet(text):
@@ -85,7 +95,7 @@ if __name__ == '__main__':
         response = urllib.urlopen("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(t[0]) + "," + str(t[1]) + "&sensor=false")
         js = json.load(response)
         print js
-        time.sleep(3)
+        time.sleep(SLEEP_INTERVAL_FOR_GOOGLE_QUERY)
 
         try:
             res = js["results"]
@@ -117,6 +127,8 @@ if __name__ == '__main__':
 
     print htmllist
     print "put that list in the sample.html file :) then open it"
+
+    array_to_html_page(htmllist, 'test.html')
 
 
 
