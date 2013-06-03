@@ -45,11 +45,11 @@ HEADER =    '\
             google.load("visualization", "1", {"packages": ["geochart"]});\
             google.setOnLoadCallback(drawRegionsMap);\
             function drawRegionsMap() {\
-            var data = google.visualization.arrayToDataTable(\
+            var data = google.visualization.arrayToDataTable([\
             '
 
 TRAILER =   '\
-            );\
+            ]);\
             var options = {};\
             var chart = new google.visualization.GeoChart(document.getElementById("chart_div"));\
             chart.draw(data, options);\
@@ -65,7 +65,11 @@ TRAILER =   '\
 def array_to_html_page(arr, filename):
     arrstring = "['Country', 'Sentiment'],"
     for entry in arr:
-        arrstring += "[\'" + entry[0] + "\']," + arr[1] + "],"
+        arrstring += "[\'" + entry[0] + "\'," + str(entry[1]) + "],"
+        print arrstring
+
+    arrstring = arrstring[:-1]
+    print arrstring
 
     htmlstring = HEADER + arrstring + TRAILER
 

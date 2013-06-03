@@ -12,13 +12,14 @@ from makehtml import array_to_html_page
 
 
 # DEFINE
-PAGES_TO_SCAN = 10
+PAGES_TO_SCAN = 1
 SLEEP_INTERVAL_FOR_GOOGLE_QUERY = 3
 
 
-keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
-            'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
-            'facetime', 'appstore', 'osx', 'nsobject'}
+#keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
+#            'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
+#            'facetime', 'appstore', 'osx', 'nsobject'}
+keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs'}
 tweets = []
 
 
@@ -119,7 +120,7 @@ if __name__ == '__main__':
 
     print counter
 
-    htmllist = [['Country', 'Sentiment']]
+    htmllist = []
 
     for key, value in counter.iteritems():
         temp = [key.decode("utf-8"),value]
