@@ -6,7 +6,9 @@ from nltk.corpus import stopwords
 from senti_classifier import senti_classifier
 
 # DEFINE
-PAGES_TO_SCAN = 50
+import time
+
+PAGES_TO_SCAN = 10
 
 keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
             'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
@@ -75,16 +77,49 @@ if __name__ == '__main__':
                             vote = 0
 
                         print coordinates[0], coordinates[1], vote
+                        tweets.append((coordinates[0], coordinates[1], vote,))
 
-
-
-
-
-
-    print len(tweets)
+    counter = {}
 
     for t in tweets:
-        print t
+        response = urllib.urlopen("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(t[0]) + "," + str(t[1]) + "&sensor=false")
+        js = json.load(response)
+        print js
+        time.sleep(3)
+
+        try:
+            res = js["results"]
+
+        except:
+            continue
+
+        try:
+            country = res[len(res) - 1]["formatted_address"]
+        except:
+            print "something wrong"
+            continue
+
+
+        try:
+            counter[country] += t[2]
+
+        except KeyError:
+            counter[country] = t[2]
+
+
+    print counter
+
+    htmllist = [['Country', 'Sentiment']]
+
+    for key, value in counter.iteritems():
+        temp = [key.decode("utf-8"),value]
+        htmllist.append((temp))
+
+    print htmllist
+    print "put that list in the sample.html file :) then open it"
+
+
+
 
 
 
