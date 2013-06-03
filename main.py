@@ -14,7 +14,7 @@ import webbrowser
 
 # DEFINES
 PAGES_TO_SCAN = 10
-SLEEP_INTERVAL_FOR_GOOGLE_QUERY = 0
+SLEEP_INTERVAL_FOR_GOOGLE_QUERY = 1
 OUTFILE = 'test.html'
 
 
@@ -98,10 +98,11 @@ if __name__ == '__main__':
             js = json.load(urllib.urlopen(url))
 
             if js["status"] == "OVER_QUERY_LIMIT":
+                # Slow down a lot now, and going slower in the future
                 SLEEP_INTERVAL_FOR_GOOGLE_QUERY *= 2
-                time.sleep(2*SLEEP_INTERVAL_FOR_GOOGLE_QUERY)
+                time.sleep(3*SLEEP_INTERVAL_FOR_GOOGLE_QUERY)
+                # Try again after a long breath
                 js = json.load(urllib.urlopen(url))
-                print SLEEP_INTERVAL_FOR_GOOGLE_QUERY, js
 
             res = js["results"]
 
@@ -115,9 +116,9 @@ if __name__ == '__main__':
             print "something wrong"
             continue
 
+        print counter, t[2]
         try:
             counter[country] += t[2]
-
         except KeyError:
             counter[country] = t[2]
 
@@ -132,7 +133,7 @@ if __name__ == '__main__':
 
     array_to_html_page(htmllist, OUTFILE)
     print "Check out the " + OUTFILE + " file"
-    webbrowser.open('file:///' + OUTFILE)
+    webbrowser.open(OUTFILE)
 
 
 
