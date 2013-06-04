@@ -9,11 +9,10 @@ from nltk.corpus import stopwords
 import time
 from senti_classifier import senti_classifier
 from makehtml import array_to_html_page
-import webbrowser
 
 
 # DEFINES
-PAGES_TO_SCAN = 10
+PAGES_TO_SCAN = 50
 SLEEP_INTERVAL_FOR_GOOGLE_QUERY = 1
 OUTFILE = 'test.html'
 
@@ -116,7 +115,7 @@ if __name__ == '__main__':
             print "something wrong"
             continue
 
-        print counter, t[2]
+        print counter, country, t[2]
         try:
             counter[country] += t[2]
         except KeyError:
@@ -128,12 +127,11 @@ if __name__ == '__main__':
     htmllist = []
 
     for key, value in counter.iteritems():
-        temp = [key.decode("utf-8"),value]
+        temp = [key,value]
         htmllist.append((temp))
 
     array_to_html_page(htmllist, OUTFILE)
     print "Check out the " + OUTFILE + " file"
-    webbrowser.open(OUTFILE)
 
 
 
