@@ -9,22 +9,21 @@ from nltk.corpus import stopwords
 import time
 from senti_classifier import senti_classifier
 from makehtml import array_to_html_page
+import params
+from TwitterSearch import *
 
 
 # DEFINES
-PAGES_TO_SCAN = 50
-SLEEP_INTERVAL_FOR_GOOGLE_QUERY = 1
 OUTFILE = 'test.html'
+#see params.py
+keywords = ['apple', 'iphone', 'ios', 'aapl']
 
-
-
-keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
-            'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
-            'facetime', 'appstore', 'osx', 'nsobject'}
+#keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
+#            'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
+#            'facetime', 'appstore', 'osx', 'nsobject'}
 
 
 def normalize_tweet(text):
-
     pattern = re.compile(r"(.)\1{2,}", re.DOTALL)
     text = text.lower()
 
@@ -49,91 +48,91 @@ def normalize_tweet(text):
     return clean_text
 
 
+def getTweetsForKeyword(keyword):
+    """
+    Get the (recent) tweets for a given keyword
+    :param keyword: the query keyword
+    :return: a list of tweets. List is empty if an error occurs
+    """
+    tweet_list = []
+
+    try:
+        print '*** Searching tweets for keyword:', keyword, ' ...'
+        tso = TwitterSearchOrder()
+        tso.setKeywords([keyword])
+        tso.setLanguage('en')
+        tso.setResultType('recent')
+        tso.setCount(10)
+        tso.setIncludeEntities(True)
+
+        ts = TwitterSearch(
+            consumer_key=params.CONSUMER_KEY,
+            consumer_secret=params.CONSUMER_SECRET,
+            access_token=params.ACCESS_TOKEN,
+            access_token_secret=params.ACCESS_TOKEN_SECRET
+        )
+
+        ts.authenticate()
+
+        counter = 0
+
+        for tweet in ts.searchTweetsIterable(tso):
+            counter += 1
+            tweet_list.append(tweet)
+        print '*** Found a total of %i tweets for keyword:' % counter, keyword
+        return tweet_list
+
+    except TwitterSearchException, e:
+        print "[ERROR]", e.message
+        return tweet_list
+
+
+def extractLocation(tweet):
+    try:
+        location = tweet["place"]["country_code"]
+    except:
+        location = "unknown"
+    return location
+
+
 if __name__ == '__main__':
 
-    tweets = []
-
-    for word in keywords:
-
-        for i in range(PAGES_TO_SCAN):
-            page = i + 1
-            response = urllib.urlopen("http://search.twitter.com/search.json?q=" + word + "&page=" + str(page))
-            js = json.load(response)
-
-            try:
-                tweet_list = js["results"]
-
-            except KeyError as e:
-                continue
-
-            for text in tweet_list:
-                if "geo" in text.keys() and text["geo"] is not None:
-
-                    coordinates = text["geo"]["coordinates"]
-                    if coordinates[0] != 0.0 and coordinates[1] != 0.0:
-
-                        clean_text = normalize_tweet(text["text"])
-
-                        pos_score, neg_score = senti_classifier.polarity_scores([clean_text])
-                        if pos_score > neg_score:
-                            vote = 1
-                        elif pos_score < neg_score:
-                            vote = -1
-                        else:
-                            vote = 0
-
-                        print coordinates[0], coordinates[1], vote
-                        tweets.append((coordinates[0], coordinates[1], vote,))
-
-    # ok, now i do have all the location and their sentiment. Now, find the country
     counter = {}
 
-    for t in tweets:
+    for keyword in keywords:
 
-        url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + str(t[0]) + "," + str(t[1]) + "&sensor=false"
-        time.sleep(SLEEP_INTERVAL_FOR_GOOGLE_QUERY)
+        tweet_list = getTweetsForKeyword(keyword)
 
-        try:
-            js = json.load(urllib.urlopen(url))
+        for tweet in tweet_list:
+            country = extractLocation(tweet)
 
-            if js["status"] == "OVER_QUERY_LIMIT":
-                # Slow down a lot now, and going slower in the future
-                SLEEP_INTERVAL_FOR_GOOGLE_QUERY *= 2
-                time.sleep(3*SLEEP_INTERVAL_FOR_GOOGLE_QUERY)
-                # Try again after a long breath
-                js = json.load(urllib.urlopen(url))
+            if country != "unknown":
 
-            res = js["results"]
+                clean_text = normalize_tweet(tweet["text"])
+                pos_score, neg_score = senti_classifier.polarity_scores([clean_text])
+                if pos_score > neg_score:
+                    vote = 1
+                elif pos_score < neg_score:
+                    vote = -1
+                else:
+                    vote = 0
 
-        except:
-            print js
-            continue
-
-        try:
-            country = res[len(res) - 1]["formatted_address"]
-        except:
-            print "something wrong"
-            continue
-
-        print counter, country, t[2]
-        try:
-            counter[country] += t[2]
-        except KeyError:
-            counter[country] = t[2]
-
-    print counter
+                try:
+                    counter[country] += vote
+                except KeyError:
+                    counter[country] = vote
 
     htmllist = []
 
-    for key, value in counter.iteritems():
-        temp = [key,value]
-        htmllist.append((temp))
+    for country, sentiment in counter.iteritems():
+        htmllist.append(([country, sentiment]))
 
     array_to_html_page(htmllist, OUTFILE)
     print "Check out the " + OUTFILE + " file"
 
 
 
-#TODO:
-#implement new twitter 1.1 (library :)
-#sqlite storage of tweets
+    #TODO:
+    #implement new twitter 1.1 (library :)
+    #sqlite storage of tweets
+    #classify with tweet data, not movie!
