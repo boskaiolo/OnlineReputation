@@ -20,7 +20,7 @@ class DBConnector:
             cur.execute('SELECT SQLITE_VERSION()')
             print "SQLite version: %s" % cur.fetchone()
 
-            cur.execute("CREATE TABLE IF NOT EXISTS idTweets(twitter_id INTEGER NOT NULL PRIMARY KEY, clean_text TEXT, country TEXT, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+            cur.execute("CREATE TABLE IF NOT EXISTS idTweets(twitter_id INTEGER NOT NULL PRIMARY KEY, clean_text TEXT, country TEXT, sentiment INT DEFAULT 0, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
             print "TABLE idTweets OK"
 
     def cleanAllValues(self):
@@ -30,11 +30,11 @@ class DBConnector:
             cur = con.cursor()
             cur.execute('DELETE FROM idTweets')
 
-    def insertTweet(self, id, clean_text, country):
+    def insertTweet(self, id, clean_text, country, sentiment=0):
         con = sqlite3.connect(self.DBname)
         with con:
             cur = con.cursor()
-            query = 'INSERT INTO idTweets(twitter_id, clean_text, country) VALUES ({val1}, "{val2}", "{val3}")'.format(val1=id, val2=clean_text, val3=country)
+            query = 'INSERT INTO idTweets(twitter_id, clean_text, country, sentiment) VALUES ({val1}, "{val2}", "{val3}", {val4})'.format(val1=id, val2=clean_text, val3=country, val4=sentiment)
             try:
                 cur.execute(query)
             except sqlite3.IntegrityError:

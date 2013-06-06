@@ -43,7 +43,7 @@ def normalize_tweet(text):
 
             if word.startswith("@"):
                 word = "*ACCOUNT*"
-            elif word.startswith("http://"):
+            elif word.startswith("http"):
                 word = "*LINK*"
             elif word.find("$") >= 0:
                 word = ""
@@ -132,18 +132,17 @@ if __name__ == '__main__':
             country = extractLocation(tweet)
             id = int(tweet["id"])
             clean_text = normalize_tweet(tweet["text"]).encode("utf-8")
-            db.insertTweet(id, clean_text, country)
-
 
             if country != "unknown":
-
-
                 vote = sentimentTweet(clean_text)
+                db.insertTweet(id, clean_text, country, vote)
 
                 try:
                     counter[country] += vote
                 except KeyError:
                     counter[country] = vote
+            else:
+                db.insertTweet(id, clean_text, country)
 
     htmllist = []
 
@@ -159,3 +158,5 @@ if __name__ == '__main__':
     #implement new twitter 1.1 (library :)
     #sqlite storage of tweets
     #classify with tweet data, not movie!
+
+    # OK, not tweets are simply retrieved by a query with sqlite (need to add a filter on the keyword sequence)
