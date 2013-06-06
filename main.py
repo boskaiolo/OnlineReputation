@@ -121,7 +121,6 @@ if __name__ == '__main__':
         except KeyError:
             counter[country] = t[2]
 
-
     print counter
 
     htmllist = []
@@ -135,8 +134,6 @@ if __name__ == '__main__':
 
 
 
-
-
-
-
-
+#TODO:
+#implement new twitter 1.1 (library :)
+#sqlite storage of tweets
