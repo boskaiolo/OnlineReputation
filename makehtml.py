@@ -66,7 +66,6 @@ def array_to_html_page(arr, filename):
     arrstring = "['Country', 'Sentiment'],"
     for entry in arr:
         arrstring += "[\'" + entry[0] + "\'," + str(entry[1]) + "],"
-
     arrstring = arrstring[:-1]
     htmlstring = HEADER + arrstring + TRAILER
     fh = open(filename, "w")

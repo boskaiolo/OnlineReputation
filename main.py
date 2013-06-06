@@ -11,6 +11,7 @@ from senti_classifier import senti_classifier
 from makehtml import array_to_html_page
 import params
 from TwitterSearch import *
+from DbConnector import DBConnector
 
 
 # DEFINES
@@ -24,19 +25,30 @@ keywords = ['apple', 'iphone', 'ios', 'aapl']
 
 
 def normalize_tweet(text):
+    """
+    Clean the tweet before sentiment analysis. Remove cashtags, links and account names. Transform hashtags in words
+    :param text: the body of a tweet
+    :return: a clean version of the body
+    """
     pattern = re.compile(r"(.)\1{2,}", re.DOTALL)
-    text = text.lower()
+    text = text.lower().replace("\"", "").replace("'", "").replace(":", "").replace(".", " ")\
+                       .replace("(", "").replace(")", "").replace(";", "")
 
     clean_text = ""
 
     for word in text.split():
         if word not in stopwords.words('english'):
+
+            word = word.strip()
+
             if word.startswith("@"):
                 word = "*ACCOUNT*"
             elif word.startswith("http://"):
                 word = "*LINK*"
             elif word.find("$") >= 0:
                 word = ""
+            elif word.startswith('#'):
+                word = word.replace('#', '')
             elif len(word) < 3:
                 word = ""
             else:
@@ -62,7 +74,7 @@ def getTweetsForKeyword(keyword):
         tso.setKeywords([keyword])
         tso.setLanguage('en')
         tso.setResultType('recent')
-        tso.setCount(10)
+        tso.setCount(100)
         tso.setIncludeEntities(True)
 
         ts = TwitterSearch(
@@ -87,6 +99,17 @@ def getTweetsForKeyword(keyword):
         return tweet_list
 
 
+def sentimentTweet(tweet):
+    pos_score, neg_score = senti_classifier.polarity_scores([tweet])
+    if pos_score > neg_score:
+        vote = 1
+    elif pos_score < neg_score:
+        vote = -1
+    else:
+        vote = 0
+    return vote
+
+
 def extractLocation(tweet):
     try:
         location = tweet["place"]["country_code"]
@@ -98,6 +121,8 @@ def extractLocation(tweet):
 if __name__ == '__main__':
 
     counter = {}
+    db = DBConnector()
+    db.testDB()
 
     for keyword in keywords:
 
@@ -105,17 +130,15 @@ if __name__ == '__main__':
 
         for tweet in tweet_list:
             country = extractLocation(tweet)
+            id = int(tweet["id"])
+            clean_text = normalize_tweet(tweet["text"]).encode("utf-8")
+            db.insertTweet(id, clean_text, country)
+
 
             if country != "unknown":
 
-                clean_text = normalize_tweet(tweet["text"])
-                pos_score, neg_score = senti_classifier.polarity_scores([clean_text])
-                if pos_score > neg_score:
-                    vote = 1
-                elif pos_score < neg_score:
-                    vote = -1
-                else:
-                    vote = 0
+
+                vote = sentimentTweet(clean_text)
 
                 try:
                     counter[country] += vote
