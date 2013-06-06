@@ -6,4 +6,9 @@ An Online Reputation tool
 
 ==
 
-Just run main.py, and then check the test.html file
+Insert your Twitter parameters in params.py (there is a template file, named params.py.TEMPLATE.py)
+
+
+Then, run main.py
+
+Finally, open test.html in your browser
