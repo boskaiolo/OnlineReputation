@@ -19,6 +19,9 @@ Thumbs.db
 ## PYC
 *.pyc
 
+## IDEA
+.idea/
+
 ## TWITTER STUFF
 params.py
 
