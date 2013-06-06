@@ -4,18 +4,21 @@ OnlineReputation
 An Online Reputation tool
 
 
-==
+Running it:
+--
 
-Insert your Twitter parameters in `params.py` (there is a template file, named `params.py.TEMPLATE.py`)
+Insert your Twitter parameters in `params.py` (there is a template file, named `params.py.TEMPLATE.py`. Modify and rename it)
 
 
 Then, run `main.py`
 
 Finally, open `test.html` in your browser
 
-==
 
-Remarks
+--
+
+
+__Remarks__
 
 If appears the error
 `[ERROR] HTTP status 429 - Too Many Requests: Request cannot be served due to the application's rate limit having been exhausted for the resource`
