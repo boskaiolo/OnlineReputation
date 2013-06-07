@@ -20,7 +20,7 @@ class DBConnector:
             cur.execute('SELECT SQLITE_VERSION()')
             print "SQLite version: %s" % cur.fetchone()
 
-            cur.execute("CREATE TABLE IF NOT EXISTS idTweets(twitter_id INTEGER NOT NULL PRIMARY KEY, clean_text TEXT, country TEXT, sentiment INT DEFAULT 0, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+            cur.execute("CREATE TABLE IF NOT EXISTS idTweets(query TEXT NOT NULL, twitter_id INTEGER NOT NULL PRIMARY KEY, clean_text TEXT NOT NULL, country TEXT DEFAULT \"unknown\", sentiment INT DEFAULT 0, timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
             print "TABLE idTweets OK"
 
     def cleanAllValues(self):
@@ -30,11 +30,12 @@ class DBConnector:
             cur = con.cursor()
             cur.execute('DELETE FROM idTweets')
 
-    def insertTweet(self, id, clean_text, country, sentiment=0):
+    def insertTweet(self, queryterms, id, clean_text, country, sentiment=0):
         con = sqlite3.connect(self.DBname)
         with con:
             cur = con.cursor()
-            query = 'INSERT INTO idTweets(twitter_id, clean_text, country, sentiment) VALUES ({val1}, "{val2}", "{val3}", {val4})'.format(val1=id, val2=clean_text, val3=country, val4=sentiment)
+            query = 'INSERT INTO idTweets(query, twitter_id, clean_text, country, sentiment) VALUES ("{val1}", {val2}, "{val3}", "{val4}", {val5})'\
+                    .format(val1=queryterms, val2=id, val3=clean_text, val4=country, val5=sentiment)
             try:
                 cur.execute(query)
             except sqlite3.IntegrityError:
@@ -42,6 +43,22 @@ class DBConnector:
             except Exception as e:
                 print "[ERROR]", query, e.message
 
+    def getSentimentTweets(self, queryterms, timestampFrom=None, timestampTo=None):
+        con = sqlite3.connect(self.DBname)
+        with con:
+            cur = con.cursor()
+            query = 'SELECT country, sum(sentiment) as sentiment_score FROM idTweets WHERE query=\"{val1}\" GROUP BY country' \
+                .format(val1=queryterms)
+            try:
+                cur.execute(query)
+                return cur.fetchall()
+            except Exception as e:
+                print "[ERROR]", query, e.message
 
-    def getTweets(self, timestampFrom=None, timestampTo=None):
-        print "TODO"
+    def cleanEntryForQuery(self, queryterms):
+        con = sqlite3.connect(self.DBname)
+        with con:
+            cur = con.cursor()
+            query = 'DELETE FROM idTweets WHERE query=\"{val}\"'\
+                    .format(val=queryterms)
+            cur.execute(query)

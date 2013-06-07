@@ -32,7 +32,9 @@ def normalize_tweet(text):
     """
     pattern = re.compile(r"(.)\1{2,}", re.DOTALL)
     text = text.lower().replace("\"", "").replace("'", "").replace(":", "").replace(".", " ")\
-                       .replace("(", "").replace(")", "").replace(";", "")
+                       .replace("(", "").replace(")", "").replace(";", "")\
+                       .replace("?", "").replace("!", "").replace("#", "").replace("`","")\
+                       .replace('\n', ' ').replace('\r', ' ')
 
     clean_text = ""
 
@@ -47,8 +49,6 @@ def normalize_tweet(text):
                 word = "*LINK*"
             elif word.find("$") >= 0:
                 word = ""
-            elif word.startswith('#'):
-                word = word.replace('#', '')
             elif len(word) < 3:
                 word = ""
             else:
@@ -113,7 +113,7 @@ def sentimentTweet(tweet):
 def extractLocation(tweet):
     try:
         location = tweet["place"]["country_code"]
-    except:
+    except Exception:
         location = "unknown"
     return location
 
@@ -123,6 +123,7 @@ if __name__ == '__main__':
     counter = {}
     db = DBConnector()
     db.testDB()
+    queryterms = ','.join(keywords)
 
     for keyword in keywords:
 
@@ -135,19 +136,21 @@ if __name__ == '__main__':
 
             if country != "unknown":
                 vote = sentimentTweet(clean_text)
-                db.insertTweet(id, clean_text, country, vote)
+                db.insertTweet(queryterms, id, clean_text, country, vote)
 
                 try:
                     counter[country] += vote
                 except KeyError:
                     counter[country] = vote
             else:
-                db.insertTweet(id, clean_text, country)
+                db.insertTweet(queryterms, id, clean_text, country)
+
+    sentiment_score = db.getSentimentTweets(queryterms)
 
     htmllist = []
 
-    for country, sentiment in counter.iteritems():
-        htmllist.append(([country, sentiment]))
+    for entry in sentiment_score:
+        htmllist.append(([entry[0], entry[1]]))
 
     array_to_html_page(htmllist, OUTFILE)
     print "Check out the " + OUTFILE + " file"
