@@ -43,22 +43,41 @@ class DBConnector:
             except Exception as e:
                 print "[ERROR]", query, e.message
 
-    def getSentimentTweets(self, queryterms, timestampFrom=None, timestampTo=None):
+    def getSentimentTweets(self, queryterm_list, timestampFrom=None, timestampTo=None):
         con = sqlite3.connect(self.DBname)
+
+        or_clause = "WHERE 1=0"
+        for word in queryterm_list:
+            or_clause += " OR query=\"" + word + "\""
+
         with con:
             cur = con.cursor()
-            query = 'SELECT country, sum(sentiment) as sentiment_score FROM idTweets WHERE query=\"{val1}\" GROUP BY country' \
-                .format(val1=queryterms)
+            query = 'SELECT country, sum(sentiment) as sentiment_score FROM idTweets {clause} GROUP BY country' \
+                .format(clause=or_clause)
             try:
                 cur.execute(query)
+                print query
                 return cur.fetchall()
             except Exception as e:
                 print "[ERROR]", query, e.message
 
-    def cleanEntryForQuery(self, queryterms):
+    def cleanEntryForQuery(self, queryterm):
         con = sqlite3.connect(self.DBname)
         with con:
             cur = con.cursor()
             query = 'DELETE FROM idTweets WHERE query=\"{val}\"'\
-                    .format(val=queryterms)
+                    .format(val=queryterm)
             cur.execute(query)
+
+    def getLastIdForQuery(self, queryterm):
+        con = sqlite3.connect(self.DBname)
+        with con:
+            cur = con.cursor()
+            query = 'SELECT MAX(twitter_id) FROM idTweets WHERE query=\"{val1}\"' \
+                .format(val1=queryterm)
+            try:
+                cur.execute(query)
+                val = cur.fetchall()[0][0]
+                return val
+            except Exception as e:
+                print "[ERROR]", query, e.message

@@ -60,7 +60,7 @@ def normalize_tweet(text):
     return clean_text
 
 
-def getTweetsForKeyword(keyword):
+def getTweetsForKeyword(keyword, last_id=None):
     """
     Get the (recent) tweets for a given keyword
     :param keyword: the query keyword
@@ -76,6 +76,9 @@ def getTweetsForKeyword(keyword):
         tso.setResultType('recent')
         tso.setCount(100)
         tso.setIncludeEntities(True)
+
+        if last_id is not None:
+            tso.setSinceID(last_id)
 
         ts = TwitterSearch(
             consumer_key=params.CONSUMER_KEY,
@@ -123,11 +126,11 @@ if __name__ == '__main__':
     counter = {}
     db = DBConnector()
     db.testDB()
-    queryterms = ','.join(keywords)
 
     for keyword in keywords:
 
-        tweet_list = getTweetsForKeyword(keyword)
+        last_id = db.getLastIdForQuery(keyword)
+        tweet_list = getTweetsForKeyword(keyword, last_id)
 
         for tweet in tweet_list:
             country = extractLocation(tweet)
@@ -136,16 +139,17 @@ if __name__ == '__main__':
 
             if country != "unknown":
                 vote = sentimentTweet(clean_text)
-                db.insertTweet(queryterms, id, clean_text, country, vote)
+                db.insertTweet(keyword, id, clean_text, country, vote)
 
                 try:
                     counter[country] += vote
                 except KeyError:
                     counter[country] = vote
             else:
-                db.insertTweet(queryterms, id, clean_text, country)
+                db.insertTweet(keyword, id, clean_text, country)
 
-    sentiment_score = db.getSentimentTweets(queryterms)
+
+    sentiment_score = db.getSentimentTweets(keywords)
 
     htmllist = []
 
@@ -158,8 +162,7 @@ if __name__ == '__main__':
 
 
     #TODO:
-    #implement new twitter 1.1 (library :)
-    #sqlite storage of tweets
-    #classify with tweet data, not movie!
-
-    # OK, not tweets are simply retrieved by a query with sqlite (need to add a filter on the keyword sequence)
+    #implement new twitter 1.1 (library :) V
+    #sqlite storage of tweets              V
+    #classify with tweet data, not movie!  -
+    #store tweeet with keyword, not keyword list. Easier to retrieve and last id is fully working V
