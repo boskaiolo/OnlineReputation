@@ -30,12 +30,12 @@ class DBConnector:
             cur = con.cursor()
             cur.execute('DELETE FROM idTweets')
 
-    def insertTweet(self, queryterms, id, clean_text, country, creation_date, sentiment=0):
+    def insertTweet(self, queryterms, twitterid, clean_text, country, creation_date, sentiment=0):
         con = sqlite3.connect(self.DBname)
         with con:
             cur = con.cursor()
             query = 'INSERT INTO idTweets(query, twitter_id, clean_text, country, sentiment, timestamp) VALUES ("{val1}", {val2}, "{val3}", "{val4}", {val5}, "{val6}")'\
-                    .format(val1=queryterms, val2=id, val3=clean_text, val4=country, val5=sentiment, val6=creation_date)
+                    .format(val1=queryterms, val2=twitterid, val3=clean_text, val4=country, val5=sentiment, val6=creation_date)
             try:
                 cur.execute(query)
             except sqlite3.IntegrityError:

@@ -1,22 +1,18 @@
-import datetime
-
 __author__ = "Alberto Boschetti"
 __status__ = "Prototype"
 
-
 import re
-import urllib
-import json
-import nltk
+import random
+
 from nltk.corpus import stopwords
-import time
 from senti_classifier import senti_classifier
+from TwitterSearch import *
+from dateutil import parser
+
 from makehtml import array_to_html_page
 import params
-from TwitterSearch import *
 from DbConnector import DBConnector
-import random
-from dateutil import parser
+
 
 
 # DEFINES
