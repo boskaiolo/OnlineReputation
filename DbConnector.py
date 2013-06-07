@@ -30,12 +30,12 @@ class DBConnector:
             cur = con.cursor()
             cur.execute('DELETE FROM idTweets')
 
-    def insertTweet(self, queryterms, id, clean_text, country, sentiment=0):
+    def insertTweet(self, queryterms, id, clean_text, country, creation_date, sentiment=0):
         con = sqlite3.connect(self.DBname)
         with con:
             cur = con.cursor()
-            query = 'INSERT INTO idTweets(query, twitter_id, clean_text, country, sentiment) VALUES ("{val1}", {val2}, "{val3}", "{val4}", {val5})'\
-                    .format(val1=queryterms, val2=id, val3=clean_text, val4=country, val5=sentiment)
+            query = 'INSERT INTO idTweets(query, twitter_id, clean_text, country, sentiment, timestamp) VALUES ("{val1}", {val2}, "{val3}", "{val4}", {val5}, "{val6}")'\
+                    .format(val1=queryterms, val2=id, val3=clean_text, val4=country, val5=sentiment, val6=creation_date)
             try:
                 cur.execute(query)
             except sqlite3.IntegrityError:
@@ -43,7 +43,7 @@ class DBConnector:
             except Exception as e:
                 print "[ERROR]", query, e.message
 
-    def getSentimentTweets(self, queryterm_list, timestampFrom=None, timestampTo=None):
+    def getSentimentTweets(self, queryterm_list):
         con = sqlite3.connect(self.DBname)
 
         or_clause = "WHERE 1=0"
@@ -56,7 +56,6 @@ class DBConnector:
                 .format(clause=or_clause)
             try:
                 cur.execute(query)
-                print query
                 return cur.fetchall()
             except Exception as e:
                 print "[ERROR]", query, e.message

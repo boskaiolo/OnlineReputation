@@ -1,3 +1,5 @@
+import datetime
+
 __author__ = "Alberto Boschetti"
 __status__ = "Prototype"
 
@@ -14,6 +16,7 @@ import params
 from TwitterSearch import *
 from DbConnector import DBConnector
 import random
+from dateutil import parser
 
 
 # DEFINES
@@ -137,20 +140,21 @@ if __name__ == '__main__':
         tweet_list = getTweetsForKeyword(keyword, last_id)
 
         for tweet in tweet_list:
+            creation_date = parser.parse(tweet["created_at"])
             country = extractLocation(tweet)
-            id = int(tweet["id"])
+            tweet_id = int(tweet["id"])
             clean_text = normalize_tweet(tweet["text"]).encode("utf-8")
 
             if country != "unknown":
                 vote = sentimentTweet(clean_text)
-                db.insertTweet(keyword, id, clean_text, country, vote)
+                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, vote)
 
                 try:
                     counter[country] += vote
                 except KeyError:
                     counter[country] = vote
             else:
-                db.insertTweet(keyword, id, clean_text, country)
+                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date)
 
     sentiment_score = db.getSentimentTweets(keywords)
 
