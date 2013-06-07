@@ -1,6 +1,7 @@
 __author__ = "Alberto Boschetti"
 __status__ = "Prototype"
 
+
 import re
 import urllib
 import json
@@ -12,6 +13,7 @@ from makehtml import array_to_html_page
 import params
 from TwitterSearch import *
 from DbConnector import DBConnector
+import random
 
 
 # DEFINES
@@ -33,7 +35,7 @@ def normalize_tweet(text):
     pattern = re.compile(r"(.)\1{2,}", re.DOTALL)
     text = text.lower().replace("\"", "").replace("'", "").replace(":", "").replace(".", " ")\
                        .replace("(", "").replace(")", "").replace(";", "")\
-                       .replace("?", "").replace("!", "").replace("#", "").replace("`","")\
+                       .replace("?", "").replace("!", "").replace("#", "").replace("`", "")\
                        .replace('\n', ' ').replace('\r', ' ')
 
     clean_text = ""
@@ -127,6 +129,8 @@ if __name__ == '__main__':
     db = DBConnector()
     db.testDB()
 
+    random.shuffle(keywords, random.random)
+
     for keyword in keywords:
 
         last_id = db.getLastIdForQuery(keyword)
@@ -148,11 +152,9 @@ if __name__ == '__main__':
             else:
                 db.insertTweet(keyword, id, clean_text, country)
 
-
     sentiment_score = db.getSentimentTweets(keywords)
 
     htmllist = []
-
     for entry in sentiment_score:
         htmllist.append(([entry[0], entry[1]]))
 
