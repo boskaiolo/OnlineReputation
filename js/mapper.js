@@ -1,3 +1,9 @@
+/*
+	Purpose: Map company twitter-based reputation using google viz library
+	Author: Edgar Sioson
+	Date: 2013-06-08
+*/
+
 var data={};
 
 function mapper() {
