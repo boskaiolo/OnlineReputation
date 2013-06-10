@@ -34,7 +34,7 @@ function mapper() {
 		
 			var script   = document.createElement("script");
 			script.type  = "text/javascript";
-			script.src   = "data/"+company+".js"; //?_="+ (new Date());
+			script.src   = "data/data.js"; //?_="+ (new Date());
 			document.body.appendChild(script),
 			i=0;
 			

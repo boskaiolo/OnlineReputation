@@ -1,74 +1,38 @@
+import glob
+import os
+
 __author__ = "Alberto Boschetti"
 __status__ = "Prototype"
 
-"""
 
-simple way to write the target output html file like this
+def array_to_html_page(arr, company):
 
-<html>
-  <head>
-    <script type='text/javascript' src='https://www.google.com/jsapi'></script>
-    <script type='text/javascript'>
-     google.load('visualization', '1', {'packages': ['geochart']});
-     google.setOnLoadCallback(drawRegionsMap);
-
-      function drawRegionsMap() {
-        var data = google.visualization.arrayToDataTable([
-          ['Country', 'Popularity'],
-          ['Germany', 200],
-          ['United States', 300],
-          ['Brazil', 400],
-          ['Canada', 500],
-          ['France', 600],
-          ['RU', 700]
-        ]);
-
-        var options = {};
-
-        var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    };
-    </script>
-  </head>
-  <body>
-    <div id="chart_div" style="width: 900px; height: 500px;"></div>
-  </body>
-</html>
-"""
-
-
-HEADER =    '\
-            <html>\
-            <head>\
-            <script type="text/javascript" src="https://www.google.com/jsapi"></script>\
-            <script type="text/javascript">\
-            google.load("visualization", "1", {"packages": ["geochart"]});\
-            google.setOnLoadCallback(drawRegionsMap);\
-            function drawRegionsMap() {\
-            var data = google.visualization.arrayToDataTable([\
-            '
-
-TRAILER =   '\
-            ]);\
-            var options = {};\
-            var chart = new google.visualization.GeoChart(document.getElementById("chart_div"));\
-            chart.draw(data, options);\
-            };\
-            </script>\
-            </head>\
-            <body>\
-            <div id="chart_div" style="width: 900px; height: 500px;"></div>\
-            </body>\
-            </html>\
-            '
-
-def array_to_html_page(arr, filename):
-    arrstring = "['Country', 'Sentiment'],"
+    """
+    Make the js vector for the html file. Write to <data/company.js>, and to data/data.js
+    :param arr: the (country, sentiment_count) vector
+    :param company: the company's name
+    """
+    arrstring = 'data["' + company + '"] = ['
+    arrstring += "['Country', 'Sentiment'],"
     for entry in arr:
         arrstring += "[\'" + entry[0] + "\'," + str(entry[1]) + "],"
     arrstring = arrstring[:-1]
-    htmlstring = HEADER + arrstring + TRAILER
-    fh = open(filename, "w")
-    fh.write(htmlstring)
+    arrstring += '];'
+
+
+    fh = open("./data/" + company + ".js", "w")
+    fh.write(arrstring)
     fh.close()
 
+    # merge them in a unique file
+    try:
+        os.remove('./data/data.js')
+    except:
+        pass
+
+    jsfiles = glob.glob('./data/*.js')
+    f = open("./data/data.js", "w")
+    for tempfile in jsfiles:
+        fh = open(tempfile, "r")
+        f.write(fh.readline())
+        fh.close()

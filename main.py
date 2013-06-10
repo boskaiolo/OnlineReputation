@@ -16,14 +16,10 @@ from DbConnector import DBConnector
 
 
 # DEFINES
-OUTFILE = 'test.html'
 #see params.py
-keywords = ['apple', 'iphone', 'ios', 'aapl']
 
-#keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
-#            'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
-#            'facetime', 'appstore', 'osx', 'nsobject'}
-
+#keywords = ['apple', 'iphone', 'ios', 'aapl']
+keywords = ['microsoft', 'sharepoint', 'windows8', 'msft']
 
 def normalize_tweet(text):
     """
@@ -128,11 +124,14 @@ if __name__ == '__main__':
     db = DBConnector()
     db.testDB()
 
+    company = keywords[0]
+
     random.shuffle(keywords, random.random)
 
     for keyword in keywords:
 
         last_id = db.getLastIdForQuery(keyword)
+        print "last_id=", last_id
         tweet_list = getTweetsForKeyword(keyword, last_id)
 
         for tweet in tweet_list:
@@ -158,13 +157,4 @@ if __name__ == '__main__':
     for entry in sentiment_score:
         htmllist.append(([entry[0], entry[1]]))
 
-    array_to_html_page(htmllist, OUTFILE)
-    print "Check out the " + OUTFILE + " file"
-
-
-
-    #TODO:
-    #implement new twitter 1.1 (library :) V
-    #sqlite storage of tweets              V
-    #classify with tweet data, not movie!  -
-    #store tweeet with keyword, not keyword list. Easier to retrieve and last id is fully working V
+    array_to_html_page(htmllist, company)

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Online Sentiment Analysis</title>
+
 	<script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
 	<script type="text/javascript" src="lib/jquery-ui-1.9.0.custom.js"></script>		
 	<link rel="stylesheet" href="css/jquery-ui-1.9.0.custom.min.css" />	
@@ -22,10 +24,11 @@
 <body>
 	<div id='viz-container'>
 		<div id='topBar'>
-			<select name='company' id='company'>
-				<option value='apple'>Apple Inc.</option>
-				<option value='microsoft'>Microsoft</option>
-			</select>
+            <p>Select a company: </p>
+            <select name='company' id='company'>
+                <option value='apple'>Apple Inc.</option>
+                <option value='microsoft'>Microsoft</option>
+            </select>
 		</div>
 		<div id="chart_div" style="width: 900px; height: 500px;"></div>
 	</div>
