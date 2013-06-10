@@ -39,8 +39,8 @@ function mapper() {
 			i=0;
 			
 			//this function simulates async requests
-			var intervalId = setInterval( function () { 
-				if (company in data || i>10) { //console.log(data)
+			var intervalId = setInterval( function () {
+				if (company in data || i>10) { //console.log(data);
 					clearInterval(intervalId);					
 					preppedData[company] = google.visualization.arrayToDataTable(data[company]) //transform data format
 					chart.draw(preppedData[company], options)
