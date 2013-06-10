@@ -4,6 +4,19 @@ OnlineReputation
 An Online Reputation tool
 
 
+Requirements:
+--
+
+You do need the following packages to run the project:
+
+`nltk`
+`TwitterSearch`
+`senti_classifier`
+
+For all of them, just simply `pip install <package>` or `easy_install <package>`
+
+
+
 Running it:
 --
 
