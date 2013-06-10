@@ -33,4 +33,5 @@ params.py
 test.html
 sample.html
 
-data/*
+data/apple.js
+data/microsoft.js

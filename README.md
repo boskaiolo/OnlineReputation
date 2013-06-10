@@ -28,4 +28,4 @@ try waiting a few minutes. Twitter APIs have rate limitations.
 
 Try it:
 --
-Just open `output_example.html`
+Just open `sample.html`
