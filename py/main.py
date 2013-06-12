@@ -15,17 +15,6 @@ from DbConnector import DBConnector
 
 
 # DEFINES
-<<<<<<< HEAD:main.py
-#see params.py
-=======
-OUTFILE = 'microsoft.html'
-#see params.py
-keywords = ['microsoft']
-
-#keywords = {'apple', 'aapl', 'tim cook', 'iphone', 'steve jobs', 'cupertino', 'wwdc', 'macbook',
-#            'ipod', 'itunes', 'ipad', 'macos', 'snow leopard', 'mountain lion', 'ios', 'xcode',
-#            'facetime', 'appstore', 'osx', 'nsobject'}
->>>>>>> a9bc399794b852cc618bba69b92aed9a43e012c7:py/main.py
 
 #keywords = ['apple', 'iphone', 'ios', 'aapl']
 keywords = ['microsoft', 'sharepoint', 'windows8', 'msft']
@@ -165,27 +154,5 @@ if __name__ == '__main__':
     htmllist = []
     for entry in sentiment_score:
         htmllist.append(([entry[0], entry[1]]))
-<<<<<<< HEAD:main.py
-
     array_to_html_page(htmllist, company)
-=======
-		
-		dataArr = ['Country', 'Sentiment']
-    for entry in htmllist:
-        dataArr.push(entry[0], entry[1])
-    
-    fh = open(filename, "w")
-    fh.write(htmlstring)
-    fh.close()
-		
-    array_to_html_page(htmllist, OUTFILE)
-    print "Check out sample.html"
 
-
-
-    #TODO:
-    #implement new twitter 1.1 (library :) V
-    #sqlite storage of tweets              V
-    #classify with tweet data, not movie!  -
-    #store tweeet with keyword, not keyword list. Easier to retrieve and last id is fully working V
->>>>>>> a9bc399794b852cc618bba69b92aed9a43e012c7:py/main.py

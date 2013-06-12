@@ -24,15 +24,12 @@ Thumbs.db
 .idea
 
 ## SQLITE
-*.sqlite3
+db/*.sqlite3
 
 ## TWITTER STUFF
-params.py
+py/params.py
 
 ## TEMP-TEST
 test.html
 
-<<<<<<< HEAD
-=======
 #data/*
->>>>>>> a9bc399794b852cc618bba69b92aed9a43e012c7
