@@ -43,6 +43,10 @@ body {
 	vertical-align: middle;
 }
 
+chart_div {
+	margin: 10px;
+}
+
 .ui-button-text {
 	font-size: 12px !important;
 	padding-bottom: 1px !important;
