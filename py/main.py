@@ -11,13 +11,14 @@ from dateutil import parser
 
 import params
 from DbConnector import DBConnector
+from makehtml import *
 
 
 
 # DEFINES
 
-#keywords = ['apple', 'iphone', 'ios', 'aapl']
-keywords = ['microsoft', 'sharepoint', 'windows8', 'msft']
+keywords = ['apple', 'iphone', 'ios', 'aapl']
+#keywords = ['microsoft', 'sharepoint', 'windows8', 'msft']
 
 def normalize_tweet(text):
     """

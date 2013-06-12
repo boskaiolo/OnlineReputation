@@ -20,18 +20,19 @@ def array_to_html_page(arr, company):
     arrstring += '];'
 
 
-    fh = open("./data/" + company + ".js", "w")
+    fh = open("../data/" + company + ".js", "w")
     fh.write(arrstring)
     fh.close()
 
     # merge them in a unique file
     try:
-        os.remove('./data/data.js')
+        os.remove('../data/data.js')
     except:
         pass
 
-    jsfiles = glob.glob('./data/*.js')
-    f = open("./data/data.js", "w")
+
+    jsfiles = glob.glob('../data/*.js')
+    f = open("../data/data.js", "w")
     for tempfile in jsfiles:
         fh = open(tempfile, "r")
         f.write(fh.readline())

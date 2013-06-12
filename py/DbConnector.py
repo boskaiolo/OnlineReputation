@@ -8,7 +8,7 @@ import sqlite3
 class DBConnector:
 
     #DEFINE
-    DBname = "db.sqlite3"
+    DBname = "../db/db.sqlite3"
 
     def testDB(self):
         """
