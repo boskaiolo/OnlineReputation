@@ -12,6 +12,7 @@ You do need the following packages to run the project:
 `nltk`
 `TwitterSearch`
 `senti_classifier`
+`gitpython`
 
 For all of them, just simply `pip install <package>` or `easy_install <package>`
 

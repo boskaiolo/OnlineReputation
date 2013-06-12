@@ -23,8 +23,8 @@ Thumbs.db
 .idea/
 .idea
 
-## SQLITE
-db/*.sqlite3
+## DB
+db/*
 
 ## TWITTER STUFF
 py/params.py
