@@ -13,6 +13,7 @@ You do need the following packages to run the project:
 `TwitterSearch`
 `senti_classifier`
 `gitpython`
+`cPickle`
 
 For all of them, just simply `pip install <package>` or `easy_install <package>`
 

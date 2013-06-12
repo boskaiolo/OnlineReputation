@@ -12,6 +12,7 @@ from dateutil import parser
 import params
 from DbConnector import DBConnector
 from makehtml import *
+from other_libs import Namer
 
 
 
@@ -123,6 +124,8 @@ if __name__ == '__main__':
     db = DBConnector()
     db.testDB()
 
+    namer = Namer()
+
     company = keywords[0]
 
     random.shuffle(keywords, random.random)
@@ -139,16 +142,23 @@ if __name__ == '__main__':
             tweet_id = int(tweet["id"])
             clean_text = normalize_tweet(tweet["text"]).encode("utf-8")
 
+            try:
+                user_name = tweet["user"]["name"].split()[0]
+                gender = namer.nameLookup(user_name)
+            except:
+                user_name = ""
+                gender = ""
+
             if country != "unknown":
                 vote = sentimentTweet(clean_text)
-                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, vote)
+                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, user_name, gender, vote)
 
                 try:
                     counter[country] += vote
                 except KeyError:
                     counter[country] = vote
             else:
-                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date)
+                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, user_name, gender)
 
     sentiment_score = db.getSentimentTweets(keywords)
 
