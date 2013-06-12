@@ -1,0 +1,108 @@
+body {
+	font-family: Verdana,Arial,Helvetica,sans-serif!important;
+	font-size: 11px;
+	text-align: center;
+}
+
+#viz-container {	
+	width: 1000px; /*960px;*/
+	margin: 0 auto;
+	padding: 5px;
+	border: 1px solid #bfbfbf;
+	border-radius: 5px;
+	background: none;
+}
+
+#topBar {
+	/*margin: 5px 0 10px 0;*/
+	height: 60px;
+}
+
+#companyBox {
+	display: inline-block; 
+	/*width: 150px; 
+	/*padding: 1px; 
+	margin: 5px; /*20px 10px 20px 20px; */
+	vertical-align: middle;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+#ageBox {
+	display: inline-block; 
+	margin: 0 0 0 5px;
+	vertical-align: middle;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+#sexBox {
+	display: inline-block; /*width: 150px;*/ 
+	padding: 1px; 
+	margin: 8px 5px 3px 5px;
+	vertical-align: middle;
+}
+
+.ui-button-text {
+	font-size: 12px !important;
+	padding-bottom: 1px !important;
+	padding: 1px 5px 1px 5px !important;
+	font-weight: normal !important;
+}
+/*
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { 
+	border-top-color: #AAA !important;
+	border-bottom-color: #AAA !important;
+	border-left-color: #AAA !important;
+	border-right-color: #AAA !important;
+}
+*/
+
+.ui-state-focus {
+	outline-color: #5897FB !important;
+}
+
+.controls .ui-button,
+.controls .ui-slider-handle{
+	border: 1px solid #aaa;
+	background: #eee;
+	background-image: -webkit-linear-gradient(bottom, #ccc 0%, #eee 60%);
+	background-image: -moz-linear-gradient(bottom, #ccc 0%, #eee 60%);
+	background-image: -o-linear-gradient(bottom, #ccc 0%, #eee 60%);
+	background-image: -ms-linear-gradient(bottom, #cccccc 0%, #eeeeee 60%);
+	background-image: linear-gradient(bottom, #cccccc 0%, #eeeeee 60%);
+}
+
+.controls .ui-button.ui-state-active,
+.select2-results .select2-highlighted, 
+.control.ui-button.ui-state-active{
+	background: #6cd079;
+	background-image: -webkit-linear-gradient(top, #6cd079 0%,#2d8f3a 100%);
+	background-image: -moz-linear-gradient(top, #6cd079 0%,#2d8f3a 100%);
+	background-image: -o-linear-gradient(top, #6cd079 0%,#2d8f3a 100%);
+	background-image: -ms-linear-gradient(top, #6cd079 0%,#2d8f3a 100%);
+	background-image: linear-gradient(top, #6cd079 0%,#2d8f3a 100%);
+	color: white;
+}
+
+.select2-container .select2-choice {height: 22px; line-height: 22px; margin-top: 5px;}
+
+.select2-results ul.select2-result-sub {
+	margin: 0 0 0 0;
+	padding: 0 0 0 20px;
+}
+
+.controls .ui-button.ui-state-active,
+.control.ui-button.ui-state-active{
+	border: 1px solid #21692B;
+	cursor: default;
+}
+
+.ui-buttonset .ui-button {
+	margin-right: -5px;
+}
+
+.ui-button {
+	padding: 2px;
+	margin: 0;
+}

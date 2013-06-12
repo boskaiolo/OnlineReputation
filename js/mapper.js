@@ -16,9 +16,11 @@ function mapper() {
 	
 	//load, prep stuff
 	$('document').ready(function () {
-		$('#company')
+		$('#company, #age')
 			.select2({minimumResultsForSearch: 10, width: '150px'})
 			.change(main)
+		
+		$('#sexBox').buttonset();
 		
 		chart = new google.visualization.GeoChart(document.getElementById("chart_div"));
 		main()
@@ -26,6 +28,8 @@ function mapper() {
 	
 	function main() {		
 		company = $('#company').select2('val');
+		age = $('#age').select2('val');
+		sex = $('input[name=sex]:checked', '#topBar').val()
 		
 		if (company in preppedData) chart.draw(preppedData[company], options)
 		else if (location.protocol == "file:") { //offline version is being used		
