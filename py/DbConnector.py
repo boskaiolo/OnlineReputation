@@ -61,12 +61,34 @@ class DBConnector:
                 print "[ERROR] ", queryterms, twitterid, clean_text, country, creation_date, user_name, gender, sentiment
                 print e, e.message
 
-    def getSentimentTweets(self, queryterm_list):
+    def getSentimentWithFilter(self, gender, twitter_usage, popularity, queryterm_list):
         con = sqlite3.connect(self.DBname)
 
-        or_clause = "WHERE 1=0"
+        or_clause = "WHERE (1=0"
         for word in queryterm_list:
             or_clause += " OR query=\"" + word + "\""
+        or_clause += ")"
+
+        if gender=="M" or gender == "F":
+            or_clause += " AND gender = \"" + gender + "\" "
+
+        if twitter_usage==1:
+            or_clause += ' AND registration_date > date("now", "-1 month") '
+        elif twitter_usage==2:
+            or_clause += ' AND registration_date BETWEEN date("now", "-1 year") AND date("now", "-1 month") '
+        elif twitter_usage==3:
+            or_clause += ' AND registration_date BETWEEN date("now", "-2 year") AND date("now", "-1 year") '
+        elif twitter_usage==4:
+            or_clause += ' AND registration_date < date("now", "-2 year") '
+
+        if popularity==1:
+            or_clause += ' AND followers <= 10 '
+        elif popularity==2:
+            or_clause += ' AND followers > 10 AND followers <= 100 '
+        elif popularity==3:
+            or_clause += ' AND followers > 100 AND followers <= 1000 '
+        elif popularity==4:
+            or_clause += ' AND followers > 1000 '
 
         with con:
             cur = con.cursor()

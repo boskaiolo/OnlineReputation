@@ -20,13 +20,21 @@ import string
 
 # DEFINES
 
-keywords = ['garda']
-#keywords = ['apple', 'iphone', 'ios', 'aapl']
+keywords = ['apple', 'iphone', 'ios', 'aapl']
 #keywords = ['microsoft', 'sharepoint', 'windows8', 'msft']
 
 
 def removeNonAscii(s):
     return "".join(i for i in s if ord(i) < 128)
+
+
+def write_it(gender, twitter_use, popularity, keywords):
+    sentiment_score = db.getSentimentWithFilter(gender, twitter_use, popularity, keywords)
+    htmllist = []
+    for entry in sentiment_score:
+        htmllist.append(([entry[0], entry[1]]))
+    array_to_html_page(htmllist, company+"-"+gender+"-"+str(twitter_use)+"-"+str(popularity))
+
 
 
 def normalize_tweet(text):
@@ -176,19 +184,106 @@ if __name__ == '__main__':
                 vote = sentimentTweet(clean_text)
                 db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, user_name, gender,
                                account_date, followers_count, vote)
-
                 try:
                     counter[country] += vote
                 except KeyError:
                     counter[country] = vote
+
             else:
                 db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, user_name, gender,
                                account_date, followers_count)
 
-    sentiment_score = db.getSentimentTweets(keywords)
 
-    htmllist = []
-    for entry in sentiment_score:
-        htmllist.append(([entry[0], entry[1]]))
-    array_to_html_page(htmllist, company)
 
+
+    write_it("M", 0, 0, keywords)
+    write_it("M", 0, 1, keywords)
+    write_it("M", 0, 2, keywords)
+    write_it("M", 0, 3, keywords)
+    write_it("M", 0, 4, keywords)
+
+    write_it("M", 1, 0, keywords)
+    write_it("M", 1, 1, keywords)
+    write_it("M", 1, 2, keywords)
+    write_it("M", 1, 3, keywords)
+    write_it("M", 1, 4, keywords)
+
+    write_it("M", 2, 0, keywords)
+    write_it("M", 2, 1, keywords)
+    write_it("M", 2, 2, keywords)
+    write_it("M", 2, 3, keywords)
+    write_it("M", 2, 4, keywords)
+
+    write_it("M", 3, 0, keywords)
+    write_it("M", 3, 1, keywords)
+    write_it("M", 3, 2, keywords)
+    write_it("M", 3, 3, keywords)
+    write_it("M", 3, 4, keywords)
+
+    write_it("M", 4, 0, keywords)
+    write_it("M", 4, 1, keywords)
+    write_it("M", 4, 2, keywords)
+    write_it("M", 4, 3, keywords)
+    write_it("M", 4, 4, keywords)
+
+    
+    write_it("F", 0, 0, keywords)
+    write_it("F", 0, 1, keywords)
+    write_it("F", 0, 2, keywords)
+    write_it("F", 0, 3, keywords)
+    write_it("F", 0, 4, keywords)
+
+    write_it("F", 1, 0, keywords)
+    write_it("F", 1, 1, keywords)
+    write_it("F", 1, 2, keywords)
+    write_it("F", 1, 3, keywords)
+    write_it("F", 1, 4, keywords)
+
+    write_it("F", 2, 0, keywords)
+    write_it("F", 2, 1, keywords)
+    write_it("F", 2, 2, keywords)
+    write_it("F", 2, 3, keywords)
+    write_it("F", 2, 4, keywords)
+
+    write_it("F", 3, 0, keywords)
+    write_it("F", 3, 1, keywords)
+    write_it("F", 3, 2, keywords)
+    write_it("F", 3, 3, keywords)
+    write_it("F", 3, 4, keywords)
+
+    write_it("F", 4, 0, keywords)
+    write_it("F", 4, 1, keywords)
+    write_it("F", 4, 2, keywords)
+    write_it("F", 4, 3, keywords)
+    write_it("F", 4, 4, keywords)
+
+
+    write_it("A", 0, 0, keywords)
+    write_it("A", 0, 1, keywords)
+    write_it("A", 0, 2, keywords)
+    write_it("A", 0, 3, keywords)
+    write_it("A", 0, 4, keywords)
+
+    write_it("A", 1, 0, keywords)
+    write_it("A", 1, 1, keywords)
+    write_it("A", 1, 2, keywords)
+    write_it("A", 1, 3, keywords)
+    write_it("A", 1, 4, keywords)
+
+    write_it("A", 2, 0, keywords)
+    write_it("A", 2, 1, keywords)
+    write_it("A", 2, 2, keywords)
+    write_it("A", 2, 3, keywords)
+    write_it("A", 2, 4, keywords)
+
+    write_it("A", 3, 0, keywords)
+    write_it("A", 3, 1, keywords)
+    write_it("A", 3, 2, keywords)
+    write_it("A", 3, 3, keywords)
+    write_it("A", 3, 4, keywords)
+
+    write_it("A", 4, 0, keywords)
+    write_it("A", 4, 1, keywords)
+    write_it("A", 4, 2, keywords)
+    write_it("A", 4, 3, keywords)
+    write_it("A", 4, 4, keywords)

@@ -1,1 +1,0 @@
-data["apple"] = [['Country', 'Sentiment']];

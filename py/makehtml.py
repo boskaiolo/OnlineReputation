@@ -36,4 +36,5 @@ def array_to_html_page(arr, company):
     for tempfile in jsfiles:
         fh = open(tempfile, "r")
         f.write(fh.readline())
+        f.write("\n")
         fh.close()

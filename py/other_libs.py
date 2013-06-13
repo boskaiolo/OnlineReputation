@@ -79,6 +79,6 @@ class Namer:
 
     def nameLookup(self, name):
         try:
-            return self.namedic[name.lower()]
+            return self.namedic[name.lower().strip()]
         except KeyError as e:
             return ""
