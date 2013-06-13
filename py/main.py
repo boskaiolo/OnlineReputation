@@ -13,13 +13,21 @@ import params
 from DbConnector import DBConnector
 from makehtml import *
 from other_libs import Namer
+import string
+
 
 
 
 # DEFINES
 
-keywords = ['apple', 'iphone', 'ios', 'aapl']
+keywords = ['garda']
+#keywords = ['apple', 'iphone', 'ios', 'aapl']
 #keywords = ['microsoft', 'sharepoint', 'windows8', 'msft']
+
+
+def removeNonAscii(s):
+    return "".join(i for i in s if ord(i) < 128)
+
 
 def normalize_tweet(text):
     """
@@ -28,10 +36,13 @@ def normalize_tweet(text):
     :return: a clean version of the body
     """
     pattern = re.compile(r"(.)\1{2,}", re.DOTALL)
-    text = text.lower().replace("\"", "").replace("'", "").replace(":", "").replace(".", " ")\
-                       .replace("(", "").replace(")", "").replace(";", "")\
-                       .replace("?", "").replace("!", "").replace("#", "").replace("`", "")\
-                       .replace('\n', ' ').replace('\r', ' ')
+    text = text.lower().replace("\"", "").replace("'", "").replace(":", "").replace(".", "") \
+        .replace("(", "").replace(")", "").replace(";", "") \
+        .replace("?", "").replace("!", "").replace("#", "").replace("`", "") \
+        .replace("[", "").replace("]", "") \
+        .replace('\n', ' ').replace('\r', ' ')
+
+    text = removeNonAscii(text)
 
     clean_text = ""
 
@@ -114,7 +125,7 @@ def extractLocation(tweet):
     try:
         location = tweet["place"]["country_code"]
     except Exception:
-        location = "unknown"
+        location = ""
     return location
 
 
@@ -137,28 +148,42 @@ if __name__ == '__main__':
         tweet_list = getTweetsForKeyword(keyword, last_id)
 
         for tweet in tweet_list:
+
             creation_date = parser.parse(tweet["created_at"])
             country = extractLocation(tweet)
             tweet_id = int(tweet["id"])
             clean_text = normalize_tweet(tweet["text"]).encode("utf-8")
 
             try:
-                user_name = tweet["user"]["name"].split()[0]
+                account_date = parser.parse(tweet["user"]["created_at"])
+            except:
+                account_date = ""
+
+            try:
+                followers_count = int(tweet["user"]["followers_count"])
+            except:
+                followers_count = -1
+
+            try:
+                user_name = removeNonAscii(tweet["user"]["name"].split()[0])
                 gender = namer.nameLookup(user_name)
+
             except:
                 user_name = ""
                 gender = ""
 
-            if country != "unknown":
+            if country != "":
                 vote = sentimentTweet(clean_text)
-                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, user_name, gender, vote)
+                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, user_name, gender,
+                               account_date, followers_count, vote)
 
                 try:
                     counter[country] += vote
                 except KeyError:
                     counter[country] = vote
             else:
-                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, user_name, gender)
+                db.insertTweet(keyword, tweet_id, clean_text, country, creation_date, user_name, gender,
+                               account_date, followers_count)
 
     sentiment_score = db.getSentimentTweets(keywords)
 

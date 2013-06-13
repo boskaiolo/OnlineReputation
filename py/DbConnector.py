@@ -24,11 +24,13 @@ class DBConnector:
                         "query TEXT NOT NULL, "
                         "twitter_id INTEGER NOT NULL PRIMARY KEY, "
                         "clean_text TEXT NOT NULL, "
-                        "country TEXT DEFAULT \"unknown\", "
+                        "country TEXT DEFAULT \"\", "
                         "sentiment INT DEFAULT 0, "
                         "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
                         "user_name TEXT DEFAULT \"\", "
-                        "gender TEXT DEFAULT \"\")")
+                        "gender TEXT DEFAULT \"\","
+                        "registration_date TIMESTAMP,"
+                        "followers INT DEFAULT 0)")
             print "TABLE idTweets OK"
 
     def cleanAllValues(self):
@@ -38,22 +40,26 @@ class DBConnector:
             cur = con.cursor()
             cur.execute('DELETE FROM idTweets')
 
-    def insertTweet(self, queryterms, twitterid, clean_text, country, creation_date, user_name, gender, sentiment=0):
+    def insertTweet(self, queryterms, twitterid, clean_text, country, creation_date, user_name, gender,
+                    registration_date, followers, sentiment=0):
         con = sqlite3.connect(self.DBname)
         with con:
             cur = con.cursor()
             try:
                 query = 'INSERT INTO idTweets' \
-                        '(query, twitter_id, clean_text, country, sentiment, timestamp, user_name, gender) \
+                        '(query, twitter_id, clean_text, country, sentiment, timestamp, user_name, gender,' \
+                        ' registration_date, followers) \
                          VALUES ' \
-                        '("{val1}", {val2}, "{val3}", "{val4}", {val5}, "{val6}", "{val7}", "{val8}")' \
-                    .format(val1=queryterms, val2=twitterid, val3=clean_text, val4=country, val5=sentiment,
-                            val6=creation_date, val7=user_name.decode("utf-8"), val8=gender)
+                        '("{val1}", {val2}, "{val3}", "{val4}", {val5}, "{val6}", "{val7}", "{val8}", "{val9}", {val10})' \
+                    .format(val1=queryterms, val2=twitterid, val3=clean_text.encode("utf-8"), val4=country, val5=sentiment,
+                            val6=creation_date, val7=user_name.decode("utf-8"), val8=gender, val9=registration_date,
+                            val10=followers)
                 cur.execute(query)
             except sqlite3.IntegrityError:
                 pass # trying to re-insert the same tweet!
             except Exception as e:
                 print "[ERROR] ", queryterms, twitterid, clean_text, country, creation_date, user_name, gender, sentiment
+                print e, e.message
 
     def getSentimentTweets(self, queryterm_list):
         con = sqlite3.connect(self.DBname)
@@ -73,13 +79,6 @@ class DBConnector:
             except Exception as e:
                 print "[ERROR]", query, e.message
 
-    def cleanEntryForQuery(self, queryterm):
-        con = sqlite3.connect(self.DBname)
-        with con:
-            cur = con.cursor()
-            query = 'DELETE FROM idTweets WHERE query=\"{val}\"'\
-                    .format(val=queryterm)
-            cur.execute(query)
 
     def getLastIdForQuery(self, queryterm):
         con = sqlite3.connect(self.DBname)

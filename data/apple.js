@@ -1,1 +1,1 @@
-data["apple"] = [['Country', 'Sentiment'],['',1],['CA',0],['GB',4],['IT',0],['MY',0],['US',9],['ZA',1],['unknown',0]];
+data["apple"] = [['Country', 'Sentiment']];
