@@ -28,7 +28,7 @@ body {
 	overflow: hidden;
 }
 
-#ageBox {
+#popularityBox, #joinedBox {
 	display: inline-block; 
 	margin: 0 0 0 5px;
 	vertical-align: middle;
@@ -38,7 +38,7 @@ body {
 
 #sexBox {
 	display: inline-block; /*width: 150px;*/ 
-	padding: 1px; 
+	padding: 10px 0 0 0; 
 	margin: 8px 5px 3px 5px;
 	vertical-align: middle;
 }
