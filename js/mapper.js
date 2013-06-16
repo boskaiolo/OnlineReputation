@@ -74,7 +74,7 @@ function mapper() {
 		//must wait for draw to render chart before looking for legend
 		setTimeout(function () {
 			var legend = d3.select('svg').selectAll('g').selectAll('g')[1][6]; console.log(legend)
-			d3.select(legend).attr('transform','translate(300,0)')
+			d3.select(legend).attr('transform','translate(350,0)')
 		}, 500)
 	}
 	
