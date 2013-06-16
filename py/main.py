@@ -20,8 +20,11 @@ import string
 
 # DEFINES
 
-keywords = ['apple', 'iphone', 'ios', 'aapl']
+#keywords = ['apple', 'iphone', 'ios', 'aapl']
 #keywords = ['microsoft', 'sharepoint', 'windows8', 'msft']
+#keywords = ['starbucks', 'frappuccino']
+keywords = ['google', 'goog']
+
 
 
 def removeNonAscii(s):
@@ -154,7 +157,7 @@ if __name__ == '__main__':
         last_id = db.getLastIdForQuery(keyword)
         print "last_id=", last_id
         tweet_list = getTweetsForKeyword(keyword, last_id)
-
+        #tweet_list = []
         for tweet in tweet_list:
 
             creation_date = parser.parse(tweet["created_at"])

@@ -32,4 +32,5 @@ py/params.py
 ## TEMP-TEST
 test.html
 
-#data/*
+data/*
+!data/data.js
