@@ -1,0 +1,1 @@
+data["microsoft-A-2-0"] = [['Country', 'Sentiment'],['',0],['AT',-1],['CA',0],['GB',2],['IT',-2],['US',11]];

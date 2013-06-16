@@ -1,0 +1,1 @@
+data["microsoft-A-4-2"] = [['Country', 'Sentiment'],['',0],['CL',0],['DE',1],['GB',3],['IT',-1],['NL',-1],['SE',2],['US',5],['ZA',2]];

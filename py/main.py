@@ -20,8 +20,10 @@ import string
 
 # DEFINES
 
-keywords = ['apple', 'iphone', 'ios', 'aapl']
+#keywords = ['apple', 'iphone', 'ios', 'aapl']
 #keywords = ['microsoft', 'sharepoint', 'windows8', 'msft']
+keywords = ['starbucks', 'frappuccino']
+#keywords = ['google', 'goog']
 
 
 def removeNonAscii(s):

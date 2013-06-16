@@ -1,0 +1,1 @@
+data["microsoft-M-0-3"] = [['Country', 'Sentiment'],['',0],['ES',-1],['GB',3],['JP',0],['MK',1],['NL',0],['SE',1],['US',11],['ZA',-2]];

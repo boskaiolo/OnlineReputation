@@ -1,0 +1,1 @@
+data["google-M-0-2"] = [['Country', 'Sentiment'],['',0],['DE',1],['GB',-1],['IE',-1],['NL',0],['US',2]];

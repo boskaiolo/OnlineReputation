@@ -1,0 +1,1 @@
+data["google-F-0-4"] = [['Country', 'Sentiment'],['',0],['GB',-1],['US',1]];

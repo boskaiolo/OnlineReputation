@@ -1,0 +1,1 @@
+data["apple-A-2-3"] = [['Country', 'Sentiment'],['',0],['BR',2],['CA',4],['ES',1],['GB',-1],['TR',-1],['US',-7]];

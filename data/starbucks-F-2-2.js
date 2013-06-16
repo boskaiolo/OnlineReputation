@@ -1,0 +1,1 @@
+data["starbucks-F-2-2"] = [['Country', 'Sentiment'],['',0],['CA',-1],['FR',0],['GB',1],['US',5]];
