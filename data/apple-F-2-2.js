@@ -1,1 +1,0 @@
-data["apple-F-2-2"] = [['Country', 'Sentiment'],['',0],['US',1]];

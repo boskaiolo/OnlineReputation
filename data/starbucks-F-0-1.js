@@ -1,1 +1,0 @@
-data["starbucks-F-0-1"] = [['Country', 'Sentiment'],['',0]];

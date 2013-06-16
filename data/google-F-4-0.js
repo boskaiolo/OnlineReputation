@@ -1,1 +1,0 @@
-data["google-F-4-0"] = [['Country', 'Sentiment'],['',0],['CA',0],['GB',2],['NL',0],['US',8]];

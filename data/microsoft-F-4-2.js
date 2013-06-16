@@ -1,1 +1,0 @@
-data["microsoft-F-4-2"] = [['Country', 'Sentiment'],['',0],['GB',2],['US',2]];

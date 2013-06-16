@@ -1,1 +1,0 @@
-data["microsoft-M-4-4"] = [['Country', 'Sentiment'],['',0],['CA',1],['GB',1],['MX',0],['US',0]];

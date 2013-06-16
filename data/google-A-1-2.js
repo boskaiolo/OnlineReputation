@@ -1,1 +1,0 @@
-data["google-A-1-2"] = [['Country', 'Sentiment'],['',0],['ES',0],['US',1]];

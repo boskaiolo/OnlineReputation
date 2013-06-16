@@ -1,1 +1,0 @@
-data["microsoft-M-0-0"] = [['Country', 'Sentiment'],['',0],['CA',1],['DE',1],['ES',-1],['GB',6],['JP',0],['MK',1],['MX',0],['NL',-1],['SE',1],['US',16],['ZA',0]];
