@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Sentiment Analysis</title>
+
+	<script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" src="lib/jquery-ui-1.9.0.custom.js"></script>		
+	<link rel="stylesheet" href="css/jquery-ui-1.9.0.custom.min.css" />	
+	
+	<script type="text/javascript" src="lib/select2.js"></script>	
+	<link rel="stylesheet" href="css/select2.css"/>			
+	
+	<script type="text/javascript" src="lib/d3.v2.min.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	
+	<script type="text/javascript" src="js/mapper.js"></script>
+	<link rel="stylesheet" href="css/mapper.css"/>
+	<script type="text/javascript">		
+		var map = mapper()
+			.options({
+				colorAxis: {
+					minValue: -5,  
+					maxValue: 5, 
+					colors: ['#FF0000', '#00FF00']
+				}
+			})
+			
+		var data = {}
+	</script>
+	
+	<script type="text/javascript" src="data/data.js"></script>
+	
+</head>
+<body>
+	<div id='viz-container'>
+		<div id='topBar'>			
+			<div id='companyBox'>
+				<label for='company'>Company Name in Tweet</label><br />
+				<select name='company' id='company' class='controls'>
+					<option value='apple'>Apple</option>
+                    <option value='microsoft'>Microsoft</option>
+                    <option value='starbucks'>Starbucks</option>
+                    <option value='google'>Google</option>
+					<!--<option value='microsoft'>Microsoft</option>-->
+				</select>
+			</div>
+			<div id='popularityBox'>
+				<label for='company'>Twitter user #followers</label><br />
+				<select name='popularity' id='popularity' class='controls'>
+					<option value='0'>Unfiltered</option>
+					<option value='1'>&lt;10</option>
+					<option value='2'>10-100</option>
+					<option value='3'>100-1000</option>
+					<option value='4'>&gt;1000</option>
+				</select>
+			</div>
+			<div id='joinedBox'>
+				<label for='company'>User since</label><br />
+				<select name='joined' id='joined' class='controls'>
+					<option value='0'>Unfiltered</option>
+					<option value='1'>&lt;1 month</option>
+					<option value='2'>1 month - 1 year</option>
+					<option value='3'>1 - 2 years</option>
+					<option value='4'>&gt;2 years</option>
+				</select>
+			</div>
+			<div id='sexBox' class='controls'>
+				<input type='radio' name='sex' id='sex-3' value='A' /><label for='sex-3'>Both</label>
+				<input type='radio' name='sex' id='sex-1' value='M' checked='checked'/><label for='sex-1'>Males</label>
+				<input type='radio' name='sex' id='sex-2' value='F' /><label for='sex-2'>Females</label>				
+			</div>
+		</div>
+		<div id="chart_div" style="width: 900px; height: 500px;"></div>
+	</div>
+</body>
+</html>
